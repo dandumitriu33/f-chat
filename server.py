@@ -52,5 +52,13 @@ def logout():
     return redirect(url_for('home'))
 
 
+@app.route('/post-message', methods=['POST'])
+def post_message():
+    user_id = data_manager.get_user_id_by_username(session['username'])
+    message = request.form['message']
+    data_manager.add_new_message(user_id, message)
+    return redirect(url_for('home'))
+
+
 if __name__ == "__main__":
     app.run(debug=True)

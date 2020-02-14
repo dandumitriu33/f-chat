@@ -5,5 +5,40 @@
 {% endblock head %}
 
 {% block body %}
-    <h1>Welcome to f-chat</h1>
+
+    {% if session %}
+        <div class="border">
+            <table class="table table-borderless">
+              <thead>
+                <tr>
+                  <th>Messages</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>TestUser: apples are fruit</td>
+                </tr>
+                <tr>
+                  <td>TestUser2: True.</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        <form action="{{ url_for('post_message') }}" method="POST">
+            <div class="input-group">
+              <input type="text" name="message" class="form-control" placeholder="type your message here" aria-label="" aria-describedby="basic-addon1">
+              <div class="input-group-append">
+                <input type="submit" class="btn btn-success" value="Send">
+              </div>
+            </div>
+        </form>
+
+
+    {% else %}
+        <div class="container">
+          <div class="jumbotron">
+            <h1>Welcome to f-chat!</h1>
+        </div>
+    {% endif %}
+
 {% endblock body %}
