@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for
+from flask import session
 import data_manager
 
 
-
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 @app.route('/')
@@ -29,6 +30,26 @@ def register():
             return render_template('register.html',
                                    message_password_confirmation_failed=message_password_confirmation_failed)
     return render_template('register.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        message_login_failed = "Username or password invalid."
+        try:
+            hashed_password = data_manager.get_password_by_username(request.form['username'])
+            if data_manager.verify_password(request.form['password'], hashed_password):
+                session['username'] = request.form['username']
+                return redirect(url_for('home'))
+        except:
+            return render_template('login.html', message_login_failed=message_login_failed)
+    return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('home'))
 
 
 if __name__ == "__main__":

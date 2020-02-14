@@ -12,3 +12,18 @@ def add_user_into_db(cursor, input_username, hashed_password):
     cursor.execute(f"""
         INSERT INTO users (username, password) VALUES ('{input_username}', '{hashed_password}');
 """)
+
+
+@connection_to_database.connection_handler
+def get_password_by_username(cursor, username):
+    cursor.execute(f"""
+        SELECT password FROM users WHERE username = '{username}';
+""")
+    result = cursor.fetchone()
+    password = result['password']
+    return password
+
+
+def verify_password(input_password, hashed_password):
+    hashed_bytes_password = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(input_password.encode('utf-8'), hashed_bytes_password)
