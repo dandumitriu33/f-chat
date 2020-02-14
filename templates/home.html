@@ -15,12 +15,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>TestUser: apples are fruit</td>
-                </tr>
-                <tr>
-                  <td>TestUser2: True.</td>
-                </tr>
+                {% for message in messages %}
+                    <tr>
+                      <td>{{ message.username }}: {{ message.message }}</td>
+                    </tr>
+                {% endfor %}
               </tbody>
             </table>
         </div>

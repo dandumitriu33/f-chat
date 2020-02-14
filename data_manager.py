@@ -44,3 +44,16 @@ def add_new_message(cursor, user_id, message):
     cursor.execute(f"""
         INSERT INTO messages (user_id, message) VALUES ({user_id}, '{message}');
 """)
+
+
+@connection_to_database.connection_handler
+def get_newest_messages(cursor):
+    cursor.execute(f"""
+        SELECT message, users.username FROM messages
+        LEFT JOIN users ON messages.user_id = users.id
+        ORDER BY posted ASC 
+        LIMIT {30}
+        ;
+    """)
+    messages = cursor.fetchall()
+    return messages

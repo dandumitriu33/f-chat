@@ -9,7 +9,8 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    messages = data_manager.get_newest_messages()
+    return render_template('home.html', messages=messages)
 
 
 @app.route('/register', methods=['GET', 'POST'])
