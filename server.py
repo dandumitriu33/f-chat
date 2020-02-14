@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from flask import session
+from flask import session, jsonify
 import data_manager
 
 
@@ -59,6 +59,12 @@ def post_message():
     message = request.form['message']
     data_manager.add_new_message(user_id, message)
     return redirect(url_for('home'))
+
+
+@app.route('/messages')
+def messages():
+    messages = data_manager.get_newest_messages()
+    return jsonify(messages)
 
 
 if __name__ == "__main__":
